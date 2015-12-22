@@ -1,0 +1,37 @@
+<resources xmlns:xliff="http://schemas.android.com/tools">
+    <string name="app_name">Sunshine</string>
+    <string name="action_refresh">Refresh</string>
+    <string name="title_activity_details">DetailsActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Strings related to Settings -->
+
+    <string name="pref_title_vibrate">Vibrate</string>
+    <string name="pref_location_default">500081</string>
+    <string name="pref_location_key">location</string>
+    <string name="pref_location">Location</string>
+    <string name="pref_unit_default">metric</string>
+    <string name="pref_unit_imperial">imperial</string>
+    <string name="pref_unit_key">unit</string>
+    <string name="pref_unit">Temperature Units</string>
+    <string name="pref_unit_values" />
+    <string name="action_map">Map</string>
+    <string name="action_share">Share</string>
+    <string-array name="pref_unit_entries">
+        <item>Metric</item>
+        <item>Imperial</item>
+    </string-array>
+    <string-array name="pref_unit_values">
+        <item>metric</item>
+        <item>imperial</item>
+    </string-array>
+    <string name="today">Today</string>
+
+    <!-- Date label when displaying tomorrow's weather forecast [CHAR LIMIT=20] -->
+    <string name="tomorrow">Tomorrow</string>
+
+    <!-- Date format for displaying day of week and date (i.e. Mon Jun 1) [CHAR LIMIT=20] -->
+    <string name="format_full_friendly_date"><xliff:g id="day">%1$s</xliff:g>, <xliff:g id="date">%2$s</xliff:g></string>
+    <string name="pref_unit_metric">metric</string>
+</resources>
