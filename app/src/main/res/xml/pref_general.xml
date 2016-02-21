@@ -1,15 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <EditTextPreference
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res/com.subbu.sunshine">
+    <com.subbu.sunshine.LocationEditTextPreference
         android:defaultValue="@string/pref_location_default"
         android:inputType="text"
         android:key="@string/pref_location_key"
         android:singleLine="true"
-        android:title="@string/pref_location" />
+        android:title="@string/pref_location"
+        custom:minLength="3" />
     <ListPreference
         android:defaultValue="@string/pref_unit_default"
-        android:key="@string/pref_unit_key"
         android:entries="@array/pref_unit_entries"
         android:entryValues="@array/pref_unit_values"
+        android:key="@string/pref_unit_key"
         android:title="@string/pref_unit" />
+    <ListPreference
+        android:defaultValue="@string/pref_art_pack_sunshine"
+        android:entries="@array/pref_art_pack_options"
+        android:entryValues="@array/pref_art_pack_values"
+        android:key="@string/pref_art_pack_key"
+        android:title="@string/pref_art_pack_label" />
+    <CheckBoxPreference
+        android:defaultValue="@string/notification_not_enabled"
+        android:key="@string/notification_key"
+        android:summaryOff="@string/notification_not_enabled"
+        android:summaryOn="@string/notification_enabled"
+        android:title="@string/notification" />
 </PreferenceScreen>

@@ -5,5 +5,11 @@
         <item name="windowNoTitle">true</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
+
+    </style>
+
+    <style name="SettingsTheme" parent="@android:style/Theme.Material.Light.DarkActionBar">
+        <item name="android:colorPrimary">@color/sunshine_blue</item>
+        <item name="android:colorPrimaryDark">@color/sunshine_dark_blue</item>
     </style>
 </resources>
