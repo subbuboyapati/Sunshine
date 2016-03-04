@@ -7,11 +7,16 @@
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorAccent">@color/accent</item>
         <item name="toolbarStyle">@style/Toolbar</item>
+        <item name="android:textColorSecondary">@android:color/white</item>
     </style>
 
     <style name="ForecastTheme" parent="AppTheme">
         <item name="actionBarStyle">@style/ActionBar.Solid.Sunshine.NoTitle</item>
     </style>
+
+    <style name="AppTheme.Main" parent="AppTheme" />
+
+    <style name="AppTheme.Detail" parent="AppTheme" />
 
     <style name="ActionBar.Solid.Sunshine.NoTitle" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
         <item name="displayOptions">useLogo|showHome</item>

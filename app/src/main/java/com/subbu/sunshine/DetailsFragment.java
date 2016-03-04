@@ -10,6 +10,7 @@ import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ShareActionProvider;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,6 +31,7 @@ import com.subbu.sunshine.data.WeatherContract.WeatherEntry;
  */
 public class DetailsFragment extends Fragment implements LoaderCallbacks<Cursor> {
 
+    public static final String DETAIL_TRANSITION_ANIMATION = "DTA";
     static final String DETAIL_URI = "URI";
     private static final String LOG = DetailsFragment.class.getSimpleName();
     private static final String FORECAST_SHARE_HASHTAG = " #Sunshine";
@@ -57,7 +59,6 @@ public class DetailsFragment extends Fragment implements LoaderCallbacks<Cursor>
     private static final int COL_WEATHER_WEATHER_ID = 9;
     private final int LOADER_FORECAST = 101;
     private TextView detailsDay;
-    private TextView detailsDate;
     private TextView detailsMin;
     private TextView detailsMax;
     private TextView detailsDesc;
@@ -69,6 +70,10 @@ public class DetailsFragment extends Fragment implements LoaderCallbacks<Cursor>
     private String mForecastStr;
     private Uri mUri;
     private View view;
+    private TextView detailsHumidityValue;
+    private TextView detailsWindValue;
+    private TextView detailsPressureValue;
+    private boolean mTransitionAnimation;
 //    private MyView angleView;
 
     public DetailsFragment() {
@@ -80,19 +85,21 @@ public class DetailsFragment extends Fragment implements LoaderCallbacks<Cursor>
         Bundle arguments = getArguments();
         if (arguments != null) {
             mUri = arguments.getParcelable(DetailsFragment.DETAIL_URI);
+            mTransitionAnimation = arguments.getBoolean(DETAIL_TRANSITION_ANIMATION, false);
         }
         if (view == null) {
             view = inflater.inflate(R.layout.fragment_details, container, false);
             detailsDay = (TextView) view.findViewById(R.id.details_day);
-            detailsDate = (TextView) view.findViewById(R.id.details_date);
             detailsMin = (TextView) view.findViewById(R.id.details_min);
             detailsMax = (TextView) view.findViewById(R.id.details_max);
             detailsDesc = (TextView) view.findViewById(R.id.details_desc);
             detailsHumidity = (TextView) view.findViewById(R.id.details_humidity);
+            detailsHumidityValue = (TextView) view.findViewById(R.id.details_humidity_value);
             detailsWind = (TextView) view.findViewById(R.id.details_wind);
+            detailsWindValue = (TextView) view.findViewById(R.id.details_wind_value);
             detailsPressure = (TextView) view.findViewById(R.id.details_pressure);
+            detailsPressureValue = (TextView) view.findViewById(R.id.details_pressure_value);
             icon = (ImageView) view.findViewById(R.id.details_icon);
-//            angleView = (MyView) view.findViewById(R.id.details_angle);
         }
         return view;
     }
@@ -107,13 +114,9 @@ public class DetailsFragment extends Fragment implements LoaderCallbacks<Cursor>
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_details, menu);
         MenuItem item = menu.findItem(R.id.action_share);
-        mShareActionProvider =
-                (ShareActionProvider) MenuItemCompat.getActionProvider(item);
-        if (mForecastStr != null) {
-            mShareActionProvider.setShareIntent(createShareForecastIntent());
-        } else {
-            Log.d(LOG, "Share Action Provider is null?");
-        }
+        mShareActionProvider = new ShareActionProvider(getActivity());
+        mShareActionProvider.setShareIntent(createShareForecastIntent());
+        MenuItemCompat.setActionProvider(item, mShareActionProvider);
     }
 
     @Override
@@ -156,38 +159,39 @@ public class DetailsFragment extends Fragment implements LoaderCallbacks<Cursor>
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         Log.d(LOG, "OnloaderFinished");
-        data.moveToFirst();
+        cursor.moveToFirst();
 
-        detailsDay.setText(Utility.getDayName(getContext(), (long) data.getDouble(COL_WEATHER_DATE)));
-        detailsDate.setText(Utility.getFormattedMonthDay(getContext(), (long) data.getDouble(COL_WEATHER_DATE)));
+        String dateStr = Utility.getFriendlyDayString(getContext(), (long) cursor.getDouble(ForecastFragment.COL_WEATHER_DATE));
+        detailsDay.setText(dateStr);
+
         boolean isMetric = Utility.isMetric(getContext());
-        String highString = Utility.formatTemperature(getContext(), data.getDouble(COL_WEATHER_MAX), isMetric);
+        String highString = Utility.formatTemperature(getContext(), cursor.getDouble(COL_WEATHER_MAX), isMetric);
         detailsMax.setText(highString);
         detailsMax.setContentDescription(getString(R.string.a11y_high_temp, highString));
 
-        String lowString = Utility.formatTemperature(getContext(), data.getDouble(COL_WEATHER_MIN), isMetric);
+        String lowString = Utility.formatTemperature(getContext(), cursor.getDouble(COL_WEATHER_MIN), isMetric);
         detailsMin.setText(lowString);
         detailsMin.setContentDescription(getString(R.string.a11y_low_temp, lowString));
 
-        String description = data.getString(COL_WEATHER_DESC);
+        String description = cursor.getString(COL_WEATHER_DESC);
         detailsDesc.setText(description);
         detailsDesc.setContentDescription(getString(R.string.a11y_forecast, description));
 
-        detailsHumidity.setText(String.format(getString(R.string.format_humidity), data.getDouble(COL_WEATHER_HUMIDITY)));
+        detailsHumidityValue.setText(String.format(getString(R.string.format_humidity), cursor.getDouble(COL_WEATHER_HUMIDITY)));
         detailsHumidity.setContentDescription(detailsHumidity.getText());
 
-        String windStr = Utility.getFormattedWind(getContext(), (float) data.getDouble(COL_WEATHER_WIND)
-                , (float) data.getDouble(COL_WEATHER_DEGREE));
-        detailsWind.setText(windStr);
+        String windStr = Utility.getFormattedWind(getContext(), (float) cursor.getDouble(COL_WEATHER_WIND)
+                , (float) cursor.getDouble(COL_WEATHER_DEGREE));
+        detailsWindValue.setText(windStr);
         detailsWind.setContentDescription(detailsWind.getText());
 
-        detailsPressure.setText(String.format(getString(R.string.format_pressure), data.getDouble(COL_WEATHER_PRESSURE)));
+        detailsPressureValue.setText(String.format(getString(R.string.format_pressure), cursor.getDouble(COL_WEATHER_PRESSURE)));
         detailsPressure.setContentDescription(detailsPressure.getText());
 
 //        icon.setImageResource();
-        int weatherId = data.getInt(COL_WEATHER_WEATHER_ID);
+        int weatherId = cursor.getInt(COL_WEATHER_WEATHER_ID);
         Glide.with(this)
                 .load(Utility.getArtUrlForWeatherCondition(getContext(), weatherId))
                 .error(Utility.getArtResourceForWeatherCondition(weatherId))
@@ -195,7 +199,11 @@ public class DetailsFragment extends Fragment implements LoaderCallbacks<Cursor>
                 .into(icon);
         icon.setContentDescription(getString(R.string.a11y_forecast_icon, description));
 //        angleView.setAngle(data.getLong(COL_WEATHER_WIND));
-
+        mForecastStr = dateStr + ":" + highString + ", " + lowString;
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        if (mTransitionAnimation) {
+            activity.supportStartPostponedEnterTransition();
+        }
     }
 
     @Override

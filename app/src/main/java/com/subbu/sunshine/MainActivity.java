@@ -5,9 +5,12 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -27,9 +30,6 @@ public class MainActivity extends AppCompatActivity implements ForecastFragment.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mLocation = Utility.getPreferredLocation(this);
         if (findViewById(R.id.weather_detail_container) != null) {
             // The detail container view will be present only in the large-screen layouts
@@ -46,7 +46,6 @@ public class MainActivity extends AppCompatActivity implements ForecastFragment.
             }
         } else {
             mTwoPane = false;
-            getSupportActionBar().setElevation(0f);
         }
         SunshineSyncAdapter.initializeSyncAdapter(this);
         if (!checkPlayServices()) {
@@ -91,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements ForecastFragment.
     }
 
     @Override
-    public void onItemSelected(Uri dateUri) {
+    public void onItemSelected(Uri dateUri, ForecastAdapter.ViewHolder holder) {
         if (mTwoPane) {
             Bundle arguments = new Bundle();
             arguments.putParcelable(DetailsFragment.DETAIL_URI, dateUri);
@@ -102,7 +101,10 @@ public class MainActivity extends AppCompatActivity implements ForecastFragment.
                     .commit();
         } else {
             Intent intent = new Intent(this, DetailsActivity.class).setData(dateUri);
-            startActivity(intent);
+            ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(this,
+                    new Pair<View, String>(holder.mIconView, "icon_transition"));
+            ActivityCompat.startActivity(this, intent, activityOptionsCompat.toBundle());
         }
+
     }
 }

@@ -4,4 +4,16 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="notification_large_icon_default">48dp</dimen>
+    <dimen name="today_icon">100dp</dimen>
+    <dimen name="list_icon">40dp</dimen>
+    <dimen name="forecast_text_size">32dp</dimen>
+    <dimen name="forecast_text_width">49dp</dimen>
+    <dimen name="forecast_temperature_space">8dp</dimen>
+    <dimen name="detail_view_extra_padding">@dimen/abc_list_item_padding_horizontal_material</dimen>
+    <dimen name="appbar_elevation">4dp</dimen>
+    <dimen name="list_item_extra_padding">0dp</dimen>
+    <dimen name="detail_view_padding">@dimen/abc_list_item_padding_horizontal_material</dimen>
+    <dimen name="forecast_detail_padding_wide">16dp</dimen>
+    <dimen name="detail_container_bottom_margin">@dimen/detail_view_padding</dimen>
+
 </resources>

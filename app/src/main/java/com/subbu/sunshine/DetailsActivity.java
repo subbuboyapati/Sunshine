@@ -13,15 +13,18 @@ public class DetailsActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         if (savedInstanceState == null) {
             Bundle arguments = new Bundle();
             arguments.putParcelable(DetailsFragment.DETAIL_URI, getIntent().getData());
+            arguments.putBoolean(DetailsFragment.DETAIL_TRANSITION_ANIMATION, true);
 
             DetailsFragment detailsFragment = new DetailsFragment();
             detailsFragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.weather_detail_container, detailsFragment)
                     .commit();
+            supportPostponeEnterTransition();
         }
     }
 

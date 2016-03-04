@@ -4,4 +4,11 @@
     <color name="primary">#03A9F4</color>
     <color name="primary_dark">#0288D1</color>
     <color name="accent">#FFD740</color>
+
+    <color name="detail_accent_pane_background">#455A64</color>
+    <color name="detail_accent_label">#90A4AE</color>
+
+    <color name="activated">#E0E0E0</color>
+    <color name="forecast_low_text">#607D8B</color>
+    <color name="white">#FFFFFF</color>
 </resources>

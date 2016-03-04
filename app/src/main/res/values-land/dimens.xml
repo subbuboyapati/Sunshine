@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="appbar_elevation">4dp</dimen>
+    <dimen name="landscape_list_item_width">360dp</dimen>
+</resources>

@@ -263,4 +263,8 @@ public class Utility {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         sp.edit().putInt(context.getString(R.string.location_status), SunshineSyncAdapter.LOCATION_STATUS_UNKNOWN).apply();
     }
+
+    public static boolean usingLocalGraphics(Context mContext) {
+        return false;
+    }
 }
