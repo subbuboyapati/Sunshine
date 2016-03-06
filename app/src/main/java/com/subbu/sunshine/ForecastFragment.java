@@ -13,10 +13,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -92,10 +90,6 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         emptyView = (TextView) view.findViewById(R.id.emptyView);
         recyclerView = (RecyclerView) view.findViewById(R.id.listview_forecast);
         parallaxBar = (LinearLayout) view.findViewById(R.id.parallax_bar);
-        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
-        AppCompatActivity activity = (AppCompatActivity) getActivity();
-        activity.setSupportActionBar(toolbar);
-        activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         if (null != parallaxBar) {
             recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
